@@ -1,6 +1,6 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "@/lib/mongodb";
-//import Admin from "@/models/addAdminnnnn";
+import Admin from "@/models/Admin";
 import bcrypt from "bcryptjs";
 
 export default async function handler(
@@ -27,12 +27,10 @@ export default async function handler(
     // Check if email already exists
     const existingAdmin = await Admin.findOne({ email });
     if (existingAdmin) {
-      return res
-        .status(409)
-        .json({
-          success: false,
-          message: "Admin with this email already exists",
-        });
+      return res.status(409).json({
+        success: false,
+        message: "Admin with this email already exists",
+      });
     }
 
     // Hash password
