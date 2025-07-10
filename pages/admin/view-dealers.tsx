@@ -220,17 +220,37 @@ export default function ViewDealers() {
                     <td className="px-4 py-2">
                       {(currentPage - 1) * itemsPerPage + i + 1}
                     </td>
-                    <td className="px-4 py-2">{d.status}</td>
-                    <td className="px-4 py-2">{d.pic}</td>
-                    <td className="px-4 py-2">{d.dlrName}</td>
-                    <td className="px-4 py-2">{d.region}</td>
-                    <td className="px-4 py-2">{d.state}</td>
-                    <td className="px-4 py-2">{d.town}</td>
-                    <td className="px-4 py-2">{d.address}</td>
-                    <td className="px-4 py-2">{d.phone1}</td>
-                    <td className="px-4 py-2">{d.phone2}</td>
-                    <td className="px-4 py-2">{d.ownerOrContactPerson}</td>
-                    <td className="px-4 py-2 flex gap-2">
+                    <td className="border border-gray-300 px-4 py-2">
+                      {d.status}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {d.pic}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {d.dlrName}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {d.region}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {d.state}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {d.town}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {d.address}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {d.phone1}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {d.phone2}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {d.ownerOrContactPerson}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2 flex gap-2">
                       <button
                         onClick={() => {
                           setEditDealer(d);

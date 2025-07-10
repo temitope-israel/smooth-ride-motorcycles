@@ -21,8 +21,8 @@ export default function HomePage() {
             <br /> Registration System
           </h1>
           <p className="text-red-100 text-sm leading-relaxed">
-            Track and manage all registered motorcycles in one place.
-            Dealer and admin access only.
+            Track and manage all registered motorcycles in one place. Dealer and
+            admin access only.
           </p>
         </div>
 
@@ -44,8 +44,7 @@ export default function HomePage() {
             onClick={() => router.push("dealer/register")}
             className="w-full flex items-center justify-center gap-2 bg-gray-100 text-gray-800 py-3 px-6 rounded-lg text-lg shadow hover:bg-gray-200 transition"
           >
-            <User className="w-5 h-5" />
-            Dealer Registration
+            <User className="w-5 h-5" />I Am A Dealer
           </motion.button>
         </div>
       </motion.div>
