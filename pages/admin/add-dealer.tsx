@@ -115,9 +115,9 @@ export default function AddDealer() {
       <div className="min-h-screen bg-red-50 flex items-center justify-center p-6">
         <form
           onSubmit={handleSubmit}
-          className="bg-white shadow-lg rounded-lg p-6 w-full max-w-2xl space-y-4"
+          className="bg-white shadow-lg rounded-lg p-6 w-full max-w-2xl space-y-4 text-xs"
         >
-          <h1 className="text-xl font-bold text-red-700 text-center bg-red-600 text-white p-4 rounded-lg mb-6">
+          <h1 className="text-base font-bold text-red-700 text-center bg-red-600 text-white p-4 rounded-lg mb-6">
             ADD NEW DEALER
           </h1>
 

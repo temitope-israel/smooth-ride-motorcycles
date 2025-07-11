@@ -57,12 +57,12 @@ export default function AddAdmin() {
 
   return (
     <AdminLayout>
-      <div className="min-h-screen bg-red-50 flex items-center justify-center p-6">
+      <div className="max-h-screen bg-red-50 flex p-24">
         <form
           onSubmit={handleSubmit}
-          className="bg-white shadow-lg rounded-lg p-6 w-full max-w-md space-y-4"
+          className="bg-white shadow-lg rounded-lg m-auto p-6 w-full max-w-xs space-y-4 "
         >
-          <h2 className="text-xl text-center font-bold text-red-700">
+          <h2 className="text-lg text-center font-bold text-red-700">
             Add New Admin
           </h2>
 
@@ -111,7 +111,7 @@ export default function AddAdmin() {
 
           {/* Full Name */}
           <div>
-            <label className="block text-gray-700 font-semibold">
+            <label className="block text-gray-700 font-semibold text-sm">
               Full Name
             </label>
             <input
@@ -127,7 +127,9 @@ export default function AddAdmin() {
 
           {/* Email */}
           <div>
-            <label className="block text-gray-700 font-semibold">Email</label>
+            <label className="block text-gray-700 font-semibold text-sm">
+              Email
+            </label>
             <input
               type="email"
               value={email}

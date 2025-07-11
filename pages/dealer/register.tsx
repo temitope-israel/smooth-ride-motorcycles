@@ -276,7 +276,7 @@ export default function Register() {
   }, [scannerInput, scannerMode, scanSuccess]);
 
   return (
-    <div className="w-full max-w-md mx-auto mt-6 px-4 relative">
+    <div className="w-full max-w-md text-xs mx-auto mt-6 px-4 relative">
       <h1 className="text-xl font-bold text-center text-red-700 mb-4">
         Honda Bike Registration
       </h1>
@@ -284,7 +284,7 @@ export default function Register() {
       {/* Scanner Mode Buttons */}
       <div className="flex justify-center gap-4 mb-4 flex-wrap">
         <button
-          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm"
+          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-xs"
           onClick={() => {
             setScannerMode("camera");
             setScannerLoading(true);
@@ -294,7 +294,7 @@ export default function Register() {
           Use Phone Camera
         </button>
         <button
-          className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 text-sm"
+          className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 text-xs"
           onClick={() => {
             setScannerMode("external");
             setScannerInput("");
@@ -304,7 +304,7 @@ export default function Register() {
           Use External Scanner
         </button>
         <button
-          className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 text-sm"
+          className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 text-xs"
           onClick={resetScanOnly}
         >
           Reset Engine Number
@@ -347,10 +347,10 @@ export default function Register() {
           Scanned Engine Number
         </label>
         <input
-          type="text"
+          type="number"
           value={engineNumber}
-          readOnly
           className="w-full border rounded px-3 py-2 bg-green-100 text-green-800"
+          onChange={(e) => setEngineNumber(e.target.value)}
         />
 
         {/* Optional: show validation error if needed */}
@@ -588,7 +588,7 @@ export default function Register() {
       {successMessage && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 shadow-xl max-w-sm w-full text-center">
-            <h2 className="text-xl font-semibold text-green-700 mb-4">
+            <h2 className="text-sm font-semibold text-green-700 mb-4">
               {successMessage}
             </h2>
             <button

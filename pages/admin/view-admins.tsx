@@ -80,12 +80,12 @@ export default function AdminList() {
         <h2 className="text-2xl font-bold text-red-700 mb-6">Admin List</h2>
 
         {error && (
-          <p className="bg-red-100 border border-red-500 text-red-800 p-2 mb-4 rounded">
+          <p className="bg-red-100 border border-red-500 text-red-800 p-2 mb-4 rounded text-xs">
             {error}
           </p>
         )}
         {deletionMessage && (
-          <div className="bg-green-100 border border-green-500 text-green-800 px-4 py-2 rounded mb-4 text-sm">
+          <div className="bg-green-100 border border-green-500 text-green-800 px-4 py-2 rounded mb-4 text-xs">
             {deletionMessage}
           </div>
         )}
@@ -95,14 +95,14 @@ export default function AdminList() {
         ) : admins.length === 0 ? (
           <p>No admins found.</p>
         ) : (
-          <div className="overflow-x-auto rounded-lg shadow border border-gray-200 bg-white">
-            <table className="min-w-full divide-y divide-gray-200 text-sm">
+          <div className="overflow-x-auto rounded-lg shadow border border-gray-200 bg-white text-xs">
+            <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-red-100 text-gray-700">
                 <tr>
-                  <th className="text-base font-bold px-6 py-3 text-left">Name</th>
-                  <th className="text-base font-bold px-6 py-3 text-left ">Email</th>
-                  <th className="text-base font-bold px-6 py-3 text-left ">Created</th>
-                  <th className="text-base font-bold px-6 py-3 text-left ">Actions</th>
+                  <th className=" font-bold px-6 py-3 text-left">Name</th>
+                  <th className=" font-bold px-6 py-3 text-left ">Email</th>
+                  <th className=" font-bold px-6 py-3 text-left ">Created</th>
+                  <th className=" font-bold px-6 py-3 text-left ">Actions</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-100">
@@ -113,7 +113,7 @@ export default function AdminList() {
                     <td className="px-6 py-3">
                       {new Date(a.createdAt).toLocaleDateString()}
                     </td>
-                    <td className="px-6 py-3 flex gap-4">
+                    <td className="px-6 py-3 flex gap-6">
                       <button
                         onClick={() => regeneratePassword(a._id)}
                         className="text-blue-600 hover:text-blue-800 flex items-center gap-1"
@@ -139,8 +139,8 @@ export default function AdminList() {
         {/* Delete Confirmation Modal */}
         {adminToDelete && (
           <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-6 text-center">
-              <h2 className="text-lg font-semibold text-red-700 mb-4">
+            <div className="bg-white rounded-lg shadow-lg w-full max-w-sm p-6 text-center text-xs">
+              <h2 className=" font-semibold text-red-700 mb-4">
                 Confirm Deletion
               </h2>
               <p className="mb-6 text-gray-700">
@@ -150,13 +150,13 @@ export default function AdminList() {
               <div className="flex justify-center gap-4">
                 <button
                   onClick={deleteAdmin}
-                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm"
+                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
                 >
                   Yes, Delete
                 </button>
                 <button
                   onClick={() => setAdminToDelete(null)}
-                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded text-sm"
+                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded"
                 >
                   Cancel
                 </button>

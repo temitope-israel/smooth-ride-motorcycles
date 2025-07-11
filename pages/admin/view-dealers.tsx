@@ -84,7 +84,7 @@ export default function ViewDealers() {
 
   const handleBulkDelete = async () => {
     try {
-      const res = await fetch("/api/admin/delete-dealer", {
+      const res = await fetch("/api/admin/delete-all-dealers", {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Bulk delete failed");
@@ -158,7 +158,7 @@ export default function ViewDealers() {
 
   return (
     <AdminLayout>
-      <div className="p-6 min-h-screen bg-red-50">
+      <div className="p-6 min-h-screen bg-red-50 text-xs">
         <div className="flex flex-col sm:flex-row sm:justify-between gap-3 sm:items-center mb-4">
           <h2 className="text-2xl font-bold text-red-700">View Dealers</h2>
           <div className="flex gap-2 flex-wrap">
@@ -174,13 +174,13 @@ export default function ViewDealers() {
             />
             <button
               onClick={exportToCSV}
-              className="flex items-center gap-2 bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700"
+              className="flex items-center gap-2 bg-blue-600 text-white px-3 py-2 rounded hover:bg-blue-700 text-xs"
             >
               <Download size={16} /> Export CSV
             </button>
             <button
               onClick={() => setShowBulkDeleteModal(true)}
-              className="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700"
+              className="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 text-xs]"
             >
               Delete All Dealers
             </button>
@@ -190,8 +190,8 @@ export default function ViewDealers() {
         {loading ? (
           <p>Loading dealers...</p>
         ) : (
-          <div className="overflow-x-auto bg-white rounded shadow border">
-            <table className="min-w-full divide-y divide-gray-200 text-sm">
+          <div className="overflow-x-auto bg-white rounded shadow border mt-10">
+            <table className="min-w-full divide-y divide-gray-200 text-[10px]">
               <thead className="bg-red-100 text-left">
                 <tr>
                   {[

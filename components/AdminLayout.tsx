@@ -19,7 +19,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="min-h-screen flex flex-col md:flex-row text-xs">
+    <div className="max-h-screen flex flex-col md:flex-row">
       {/* Mobile Header */}
       <header className="md:hidden flex justify-between items-center bg-red-700 text-white p-4">
         <span className="font-bold text-lg">Honda Admin</span>
@@ -32,13 +32,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <aside
         className={`${
           open ? "block" : "hidden"
-        } md:block w-full md:w-60 bg-red-700 text-white flex flex-col justify-between md:h-screen text-xs`}
+        } md:block w-full md:w-48 bg-red-700 text-white flex flex-col justify-between md:h-screen`}
       >
         <div>
           <div className="hidden md:block px-6 py-4 font-bold text-xl border-b border-red-800">
             Honda Admin
           </div>
-          <nav className="flex flex-col p-4 gap-2 text-sm">
+          <nav className="flex flex-col p-4 gap-2 text-xs">
             <Link
               href="/admin"
               className="flex items-center  gap-2 px-3 py-2 rounded hover:bg-red-800"
@@ -82,7 +82,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             localStorage.removeItem("admin-auth");
             window.location.href = "/admin/login";
           }}
-          className="flex items-center gap-2 px-4 py-3 bg-red-800 text-white hover:bg-red-900"
+          className="flex w-full items-center gap-5 px-8 py-3 bg-red-800 text-white hover:bg-red-900 text-xs"
         >
           <LogOut size={16} /> Logout
         </button>

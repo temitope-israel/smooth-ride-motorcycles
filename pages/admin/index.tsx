@@ -145,7 +145,7 @@ export default function Admin() {
 
   return (
     <AdminLayout>
-      <div className="p-2 space-y-2 text-xs ">
+      <div className="p-2 space-y-2 ">
         <div className="flex justify-between items-center flex-wrap gap-4">
           <h1 className="text-2xl font-bold text-red-700">Admin Dashboard</h1>
           <div className="flex gap-2">
@@ -169,11 +169,11 @@ export default function Admin() {
           placeholder="Search by engine number, buyer, phone, dealer, state"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="border p-2 w-full rounded"
+          className="border p-2 w-full rounded text-sm"
         />
 
         <div className="overflow-x-auto">
-          <table className="min-w-full border-collapse border border-gray-400 text-xs">
+          <table className="min-w-full border-collapse mt-6 border border-gray-400 text-[11.5px]">
             <thead className="bg-red-600 text-white">
               <tr>
                 <th className="border px-2 py-1">S/N</th>
@@ -237,7 +237,7 @@ export default function Admin() {
               <button
                 key={i}
                 onClick={() => setPage(i + 1)}
-                className={`px-3 py-1 rounded mx-1 ${
+                className={`px-3 py-1 rounded mx-1 text-sm ${
                   page === i + 1 ? "bg-red-600 text-white" : "bg-gray-200"
                 }`}
               >
@@ -246,11 +246,11 @@ export default function Admin() {
             ))}
           </div>
           <div>
-            <label>Page Size:</label>
+            <label className="text-sm">Page Size:</label>
             <select
               value={pageSize}
               onChange={(e) => setPageSize(Number(e.target.value))}
-              className="ml-2 border px-2 py-1"
+              className="ml-2 border px-2 py-1 text-xs"
             >
               {[5, 10, 20, 50].map((size) => (
                 <option key={size}>{size}</option>
