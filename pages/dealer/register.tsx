@@ -18,6 +18,7 @@ interface FormData {
   state: string;
   dealer: string;
   purchaseDate: string;
+  usage: string;
   endUser: string;
   endUserPhone: string;
   model: string;
@@ -85,7 +86,6 @@ const modelsWithDetails: Record<
   string,
   { color: string[]; variant?: string[] }
 > = {
-  Dream: { color: ["Gray", "Red"] },
   "Ace 110": {
     color: ["Blue", "Red"],
     variant: ["Spoke - Kick Start", "Alloy - Kick Start", "Alloy - Self Start"],
@@ -94,8 +94,14 @@ const modelsWithDetails: Record<
     color: ["Blue", "Red"],
     variant: ["Spoke - Kick Start", "Alloy - Kick Start", "Alloy - Self Start"],
   },
-  "Ace 150": { color: ["Black", "Red"] },
-  "CGL 150": { color: ["Blue", "Red"] },
+  "Ace 150": { color: ["Black", "Red"], variant: ["Alloy"] },
+  "CGL 125": { color: ["Blue", "Red"] },
+  "CB Unicorn": {
+    color: ["Black", "Grey", "Red", "White"],
+    variant: ["Alloy"],
+  },
+  Dream: { color: ["Grey", "Red"] },
+  "Wave 110": { color: ["Black", "Blue"], variant: ["Alloy"] },
 };
 
 export default function Register() {
@@ -121,6 +127,7 @@ export default function Register() {
     state: "",
     dealer: "",
     purchaseDate: "",
+    usage: "",
     endUser: "",
     endUserPhone: "",
     model: "",
@@ -176,6 +183,7 @@ export default function Register() {
     if (!form.dealer) newErrors.dealer = "Dealer is required.";
     if (!form.purchaseDate)
       newErrors.purchaseDate = "Purchase date is required.";
+    if (!form.usage) newErrors.usage = "Usage is required.";
     if (!form.model) newErrors.model = "Model is required.";
     if (modelsWithDetails[form.model]?.variant && !form.variant)
       newErrors.variant = "Variant is required.";
@@ -456,6 +464,22 @@ export default function Register() {
         </div>
 
         <div>
+          <label className="block font-medium">
+            Usage: Private or Commercial (Okada)
+          </label>
+          <select
+            value={form.usage}
+            onChange={(e) => handleChange("usage", e.target.value)}
+            className="w-full border rounded px-3 py-2"
+            aria-placeholder="Select Usage"
+          >
+            <option value="">Select Usage</option>
+            <option value="Private">Private</option>
+            <option value="Commercial - Okada">Commercial (Okada)</option>
+          </select>
+        </div>
+
+        <div>
           <label className="block font-medium">End-User (Optional)</label>
           <input
             type="text"
@@ -577,6 +601,7 @@ export default function Register() {
                   state: "",
                   dealer: "",
                   purchaseDate: "",
+                  usage: "",
                   endUser: "",
                   endUserPhone: "",
                   model: "",

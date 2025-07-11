@@ -15,6 +15,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     state,
     dealer,
     purchaseDate,
+    usage,
     endUser,
     endUserPhone, // ✅ Included
     model,
@@ -32,6 +33,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     !state ||
     !dealer ||
     !purchaseDate ||
+    !usage ||
     !model ||
     !color ||
     (!rimType && model === "Ace") ||
@@ -56,6 +58,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       state,
       dealer,
       purchaseDate,
+      usage,
       endUser,
       endUserPhone, // ✅ Saved in DB
       model,

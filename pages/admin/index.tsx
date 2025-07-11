@@ -12,7 +12,9 @@ interface Customer {
   state: string;
   dealer: string;
   purchaseDate: string;
+  usage: string;
   endUser?: string;
+  endUserPhone?: string;
   model: string;
   color: string;
 }
@@ -143,19 +145,19 @@ export default function Admin() {
 
   return (
     <AdminLayout>
-      <div className="p-6 space-y-6">
+      <div className="p-2 space-y-2 text-xs ">
         <div className="flex justify-between items-center flex-wrap gap-4">
           <h1 className="text-2xl font-bold text-red-700">Admin Dashboard</h1>
           <div className="flex gap-2">
             <button
               onClick={exportCSV}
-              className="bg-green-600 text-white px-4 py-2 rounded"
+              className="bg-green-600 text-white px-4 py-2 rounded text-xs"
             >
               Export CSV
             </button>
             <button
               onClick={() => setDeleteAllConfirm(true)}
-              className="bg-red-600 text-white px-4 py-2 rounded"
+              className="bg-red-600 text-white px-4 py-2 rounded text-xs"
             >
               Delete All
             </button>
@@ -171,7 +173,7 @@ export default function Admin() {
         />
 
         <div className="overflow-x-auto">
-          <table className="min-w-full border-collapse border border-gray-400">
+          <table className="min-w-full border-collapse border border-gray-400 text-xs">
             <thead className="bg-red-600 text-white">
               <tr>
                 <th className="border px-2 py-1">S/N</th>
@@ -181,6 +183,9 @@ export default function Admin() {
                 <th className="border px-2 py-1">State</th>
                 <th className="border px-2 py-1">Dealer</th>
                 <th className="border px-2 py-1">Purchase Date</th>
+                <th className="border px-2 py-1">Usage</th>
+                <th className="border px-2 py-1">End-User</th>
+                <th className="border px-2 py-1">End-User Phone</th>
                 <th className="border px-2 py-1">Model</th>
                 <th className="border px-2 py-1">Color</th>
                 <th className="border px-2 py-1">Actions</th>
@@ -200,6 +205,9 @@ export default function Admin() {
                   <td className="border px-2 py-1">
                     {new Date(c.purchaseDate).toLocaleDateString()}
                   </td>
+                  <td className="border px-2 py-1">{c.usage}</td>
+                  <td className="border px-2 py-1">{c.endUser}</td>
+                  <td className="border px-2 py-1">{c.endUserPhone}</td>
                   <td className="border px-2 py-1">{c.model}</td>
                   <td className="border px-2 py-1">{c.color}</td>
                   <td className="border px-2 py-1 text-center">
@@ -265,7 +273,10 @@ export default function Admin() {
                     <input
                       value={(editCustomer as any)[field]}
                       onChange={(e) =>
-                        handleEditChange(field as keyof Customer, e.target.value)
+                        handleEditChange(
+                          field as keyof Customer,
+                          e.target.value
+                        )
                       }
                       className="w-full border px-3 py-1 rounded"
                     />
@@ -291,7 +302,10 @@ export default function Admin() {
         )}
 
         {editSuccess && (
-          <Modal message="Edit successful!" onClose={() => setEditSuccess(false)} />
+          <Modal
+            message="Edit successful!"
+            onClose={() => setEditSuccess(false)}
+          />
         )}
 
         {deleteId && (
@@ -304,7 +318,10 @@ export default function Admin() {
         )}
 
         {deleteSuccess && (
-          <Modal message="Customer deleted successfully." onClose={() => setDeleteSuccess(false)} />
+          <Modal
+            message="Customer deleted successfully."
+            onClose={() => setDeleteSuccess(false)}
+          />
         )}
 
         {deleteAllConfirm && (
@@ -362,7 +379,6 @@ function Modal({
     </div>
   );
 }
-
 
 // // pages/admin/index.tsx
 // import { useEffect, useState } from "react";
