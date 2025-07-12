@@ -164,6 +164,100 @@
 //   );
 // }
 
+// "use client";
+
+// import { useEffect, useRef, useState } from "react";
+// import {
+//   BrowserMultiFormatReader,
+//   BarcodeFormat,
+//   DecodeHintType,
+//   Result,
+// } from "@zxing/library";
+
+// interface ScannerProps {
+//   onScanSuccess: (data: string) => void;
+// }
+
+// export default function Scanner({ onScanSuccess }: ScannerProps) {
+//   const videoRef = useRef<HTMLVideoElement>(null);
+//   const codeReaderRef = useRef<BrowserMultiFormatReader | null>(null);
+//   const [scanMessage, setScanMessage] = useState("📷 Waiting for scan...");
+
+//   useEffect(() => {
+//     const codeReader = new BrowserMultiFormatReader();
+//     codeReaderRef.current = codeReader;
+
+//     const constraints: MediaStreamConstraints = {
+//       video: {
+//         facingMode: { ideal: "environment" },
+//         width: { ideal: 1280 },
+//         height: { ideal: 720 },
+//       },
+//       audio: false,
+//     };
+
+//     let activeStream: MediaStream | null = null;
+
+//     navigator.mediaDevices
+//       .getUserMedia(constraints)
+//       .then((stream) => {
+//         activeStream = stream;
+//         if (videoRef.current) {
+//           videoRef.current.srcObject = stream;
+//           videoRef.current.play();
+
+//           codeReader.decodeFromVideoElementContinuously(
+//             videoRef.current,
+//             (result: Result | undefined, error: Error | undefined) => {
+//               if (result) {
+//                 const text = result.getText();
+//                 setScanMessage("✅ Scan successful!");
+//                 onScanSuccess(text);
+
+//                 // Stop scanner and stream
+//                 codeReader.reset();
+//                 activeStream?.getTracks().forEach((track) => track.stop());
+
+//                 // Clear message after a few seconds
+//                 setTimeout(() => setScanMessage(""), 3000);
+//               }
+//               // We silently ignore decode errors
+//             }
+//           );
+//         }
+//       })
+//       .catch((err) => {
+//         console.error("Camera access error:", err);
+//         setScanMessage(`🚫 Camera error: ${err.message}`);
+//       });
+
+//     return () => {
+//       codeReader.reset();
+//       activeStream?.getTracks().forEach((track) => track.stop());
+//     };
+//   }, [onScanSuccess]);
+
+//   return (
+//     <div className="relative w-full max-w-md mx-auto mt-4">
+//       <video
+//         ref={videoRef}
+//         autoPlay
+//         muted
+//         playsInline
+//         className="w-full border-2 border-gray-400 rounded"
+//       />
+
+//       {/* Green outline overlay */}
+//       <div className="absolute top-1/2 left-1/2 w-64 h-20 border-4 border-green-500 rounded transform -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
+
+//       {/* Scan message */}
+//       {scanMessage && (
+//         <p className="mt-3 text-center text-sm text-blue-600">{scanMessage}</p>
+//       )}
+//     </div>
+//   );
+// }
+
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -184,56 +278,71 @@ export default function Scanner({ onScanSuccess }: ScannerProps) {
   const [scanMessage, setScanMessage] = useState("📷 Waiting for scan...");
 
   useEffect(() => {
-    const codeReader = new BrowserMultiFormatReader();
-    codeReaderRef.current = codeReader;
+    const hints = new Map();
+    hints.set(DecodeHintType.POSSIBLE_FORMATS, [
+      BarcodeFormat.CODE_128,
+      BarcodeFormat.CODE_39,
+      BarcodeFormat.EAN_13,
+      BarcodeFormat.UPC_A,
+    ]);
 
-    const constraints: MediaStreamConstraints = {
-      video: {
-        facingMode: { ideal: "environment" },
-        width: { ideal: 1280 },
-        height: { ideal: 720 },
-      },
-      audio: false,
-    };
+    const codeReader = new BrowserMultiFormatReader(hints);
+    codeReaderRef.current = codeReader;
 
     let activeStream: MediaStream | null = null;
 
-    navigator.mediaDevices
-      .getUserMedia(constraints)
-      .then((stream) => {
-        activeStream = stream;
-        if (videoRef.current) {
-          videoRef.current.srcObject = stream;
-          videoRef.current.play();
-
-          codeReader.decodeFromVideoElementContinuously(
-            videoRef.current,
-            (result: Result | undefined, error: Error | undefined) => {
-              if (result) {
-                const text = result.getText();
-                setScanMessage("✅ Scan successful!");
-                onScanSuccess(text);
-
-                // Stop scanner and stream
-                codeReader.reset();
-                activeStream?.getTracks().forEach((track) => track.stop());
-
-                // Clear message after a few seconds
-                setTimeout(() => setScanMessage(""), 3000);
-              }
-              // We silently ignore decode errors
-            }
-          );
+    const startScanner = async () => {
+      try {
+        const videoInputDevices = await codeReader.listVideoInputDevices();
+        if (videoInputDevices.length === 0) {
+          throw new Error("No video input devices found");
         }
-      })
-      .catch((err) => {
-        console.error("Camera access error:", err);
-        setScanMessage(`🚫 Camera error: ${err.message}`);
-      });
+
+        // Use the back camera if available
+        const backCamera = videoInputDevices.find((d) =>
+          d.label.toLowerCase().includes("back")
+        );
+
+        const selectedDeviceId =
+          backCamera?.deviceId || videoInputDevices[0].deviceId;
+
+        await codeReader.decodeFromVideoDevice(
+          selectedDeviceId,
+          videoRef.current!,
+          (result: Result | undefined, error: Error | undefined) => {
+            if (result) {
+              const text = result.getText();
+              console.log("Scanned:", text);
+              setScanMessage("✅ Scan successful!");
+              onScanSuccess(text);
+
+              codeReader.reset();
+              if (videoRef.current?.srcObject) {
+                const tracks = (
+                  videoRef.current.srcObject as MediaStream
+                ).getTracks();
+                tracks.forEach((track) => track.stop());
+              }
+
+              setTimeout(() => setScanMessage(""), 3000);
+            }
+          }
+        );
+      } catch (err: any) {
+        console.error("Camera error:", err);
+        const errorMessage = err instanceof Error ? err.message : String(err);
+        setScanMessage(`🚫 Camera error: ${errorMessage}`);
+      }
+    };
+
+    startScanner();
 
     return () => {
       codeReader.reset();
-      activeStream?.getTracks().forEach((track) => track.stop());
+      if (videoRef.current?.srcObject) {
+        const tracks = (videoRef.current.srcObject as MediaStream).getTracks();
+        tracks.forEach((track) => track.stop());
+      }
     };
   }, [onScanSuccess]);
 
@@ -246,15 +355,10 @@ export default function Scanner({ onScanSuccess }: ScannerProps) {
         playsInline
         className="w-full border-2 border-gray-400 rounded"
       />
-
-      {/* Green outline overlay */}
       <div className="absolute top-1/2 left-1/2 w-64 h-20 border-4 border-green-500 rounded transform -translate-x-1/2 -translate-y-1/2 pointer-events-none" />
-
-      {/* Scan message */}
       {scanMessage && (
         <p className="mt-3 text-center text-sm text-blue-600">{scanMessage}</p>
       )}
     </div>
   );
 }
-
