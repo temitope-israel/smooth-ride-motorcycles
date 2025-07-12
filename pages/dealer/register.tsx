@@ -73,15 +73,6 @@ const states = [
   "Zamfara",
 ];
 
-const dealers = [
-  "Yusuf Motors",
-  "Okafor Autos",
-  "Eze Bikes",
-  "Abuja Honda Dealer",
-  "Oyo Dealer Hub",
-  "Kano Mega Bikes",
-];
-
 const modelsWithDetails: Record<
   string,
   { color: string[]; variant?: string[] }
@@ -112,13 +103,18 @@ export default function Register() {
   const [scannerTimeout, setScannerTimeout] = useState<NodeJS.Timeout | null>(
     null
   );
+  const [dealers, setDealers] = useState<string[]>([]);
   const [dealerPassword, setDealerPassword] = useState("");
-  const [showPasswordModal, setShowPasswordModal] = useState(false);
 
   const [scanSuccess, setScanSuccess] = useState<boolean>(false);
   const [errors, setErrors] = useState<Errors>({});
   const [successMessage, setSuccessMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [envPassword, setEnvPassword] = useState(""); // we'll fetch this from API
+  const [errorModal, setErrorModal] = useState("");
 
   const [form, setForm] = useState<FormData>({
     title: "",
@@ -274,6 +270,114 @@ export default function Register() {
       window.removeEventListener("keydown", handleKeyDown);
     };
   }, [scannerInput, scannerMode, scanSuccess]);
+
+  useEffect(() => {
+    async function fetchDealers() {
+      try {
+        const res = await fetch("/api/get-dealers");
+        const data = await res.json();
+        if (res.ok) {
+          setDealers(data.dealers);
+        } else {
+          console.error("Failed to load dealers:", data.message);
+        }
+      } catch (err) {
+        console.error("Error fetching dealers:", err);
+      }
+    }
+
+    fetchDealers();
+    async function fetchPassword() {
+      try {
+        const res = await fetch("/api/get-register-password");
+        const data = await res.json();
+        if (res.ok) {
+          setEnvPassword(data.password);
+        } else {
+          console.error("Failed to load password");
+        }
+      } catch (err) {
+        console.error("Password fetch error:", err);
+      }
+    }
+
+    fetchPassword();
+  }, []); // ✅ Empty dependency array = run once on page load
+
+  const handlePasswordConfirm = async () => {
+    if (passwordInput !== envPassword) {
+      setShowPasswordModal(false);
+      setErrorModal("❌ Incorrect password.");
+      return;
+    }
+
+    setShowPasswordModal(false);
+    setLoading(true);
+    setErrors({});
+
+    const rawData = { engineNumber, ...form };
+    const cleanedData = Object.fromEntries(
+      Object.entries(rawData).filter(
+        ([_, value]) => value !== "" && value !== undefined
+      )
+    );
+
+    try {
+      const res = await fetch("/api/register-customers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(cleanedData),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Failed to register.");
+
+      setSuccessMessage("✅ Registration successful!");
+      setForm({
+        title: "",
+        buyerName: "",
+        phone: "",
+        state: "",
+        dealer: "",
+        purchaseDate: "",
+        usage: "",
+        endUser: "",
+        endUserPhone: "",
+        model: "",
+        variant: "",
+        color: "",
+        rimType: "",
+        startType: "",
+      });
+      setEngineNumber("");
+      setScannerInput("");
+      setScannerMode("none");
+      setScanSuccess(false);
+    } catch (err: any) {
+      setErrors({ general: err.message || "Something went wrong." });
+    } finally {
+      setLoading(false);
+      setPasswordInput("");
+    }
+  };
+
+  {
+    errorModal && (
+      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div className="bg-white rounded-lg p-6 shadow-xl max-w-sm w-full text-center">
+          <h2 className="text-sm font-semibold text-red-700 mb-4">
+            {errorModal}
+          </h2>
+          <button
+            onClick={() => setErrorModal("")}
+            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+          >
+            Close
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-full max-w-md text-xs mx-auto mt-6 px-4 relative">
@@ -571,9 +675,22 @@ export default function Register() {
           </div>
         )}
 
-        <button
+        {/* <button
           type="submit"
           disabled={loading}
+          className={`w-full py-2 text-white rounded ${
+            loading ? "bg-gray-400" : "bg-red-600 hover:bg-red-700"
+          }`}
+        >
+          {loading ? "Submitting..." : "Submit"}
+        </button> */}
+        <button
+          type="button"
+          disabled={loading}
+          onClick={() => {
+            if (!validateForm()) return;
+            setShowPasswordModal(true);
+          }}
           className={`w-full py-2 text-white rounded ${
             loading ? "bg-gray-400" : "bg-red-600 hover:bg-red-700"
           }`}
@@ -584,6 +701,49 @@ export default function Register() {
           <p className="text-red-600 text-sm mt-1">{errors.general}</p>
         )}
       </form>
+
+      {showPasswordModal && (
+        <div className="fixed inset-0 z-50 bg-black bg-opacity-40 flex justify-center items-center">
+          <div className="bg-white rounded-lg p-6 w-full max-w-sm shadow-lg">
+            <h2 className="text-lg font-semibold text-center text-gray-800 mb-4">
+              🔐 Confirm with Password
+            </h2>
+
+            <input
+              type={showPassword ? "text" : "password"}
+              value={passwordInput}
+              onChange={(e) => setPasswordInput(e.target.value)}
+              placeholder="Enter password"
+              className="w-full border px-4 py-2 rounded mb-3"
+            />
+
+            <label className="flex items-center mb-4 text-sm text-gray-600">
+              <input
+                type="checkbox"
+                checked={showPassword}
+                onChange={() => setShowPassword((prev) => !prev)}
+                className="mr-2"
+              />
+              Show Password
+            </label>
+
+            <div className="flex justify-between">
+              <button
+                className="bg-gray-500 text-white px-4 py-2 rounded"
+                onClick={() => setShowPasswordModal(false)}
+              >
+                Cancel
+              </button>
+              <button
+                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                onClick={handlePasswordConfirm}
+              >
+                Confirm
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {successMessage && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
