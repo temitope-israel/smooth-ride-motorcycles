@@ -451,7 +451,7 @@ export default function Register() {
           Scanned Engine Number
         </label>
         <input
-          type="number"
+          type="text"
           value={engineNumber}
           className="w-full border rounded px-3 py-2 bg-green-100 text-green-800"
           onChange={(e) => setEngineNumber(e.target.value)}
