@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, useState, useEffect } from "react";
 import Link from "next/link";
 import {
   LayoutDashboard,
@@ -17,6 +17,25 @@ interface AdminLayoutProps {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const [open, setOpen] = useState(false);
+   const [notifCount, setNotifCount] = useState(0);
+
+  useEffect(() => {
+    const fetchCount = async () => {
+      try {
+        const res = await fetch("/api/admin/notifications");
+        const data = await res.json();
+        setNotifCount(data.count || 0);
+      } catch (err) {
+        console.error("Failed to fetch notification count", err);
+      }
+    };
+
+    fetchCount();
+
+    // Optional: auto-refresh every 30 secs
+    const interval = setInterval(fetchCount, 30000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <div className="max-h-screen flex flex-col md:flex-row">
@@ -75,6 +94,15 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             >
               <Users size={16} /> View Dealers
             </Link>
+
+             <Link href="/admin/notifications" className="flex items-center justify-between p-2 hover:bg-gray-100 rounded">
+        <span>🔔 Notifications</span>
+        {notifCount > 0 && (
+          <span className="ml-2 bg-red-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
+            {notifCount}
+          </span>
+        )}
+      </Link>
           </nav>
         </div>
         <button
