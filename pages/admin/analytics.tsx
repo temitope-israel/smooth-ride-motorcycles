@@ -285,14 +285,14 @@ export default function AnalyticsPage() {
               <div className="bg-white p-4 rounded shadow">
                 <h2 className="text-base font-semibold mb-2">🏪 Top Dealers</h2>
                 <ResponsiveContainer width="100%" height={300}>
-                  <BarChart data={getDealerDistribution()} className="text-sm">
+                  <BarChart data={getDealerDistribution()} className="text-xs">
                     <XAxis
                       dataKey="name"
-                      fontSize={11}
-                      angle={-30}
+                      fontSize={10}
+                      angle={-20}
                       textAnchor="end"
                       interval={0}
-                      height={50}
+                      height={75}
                     />
                     <YAxis allowDecimals={false} />
                     <Tooltip />
