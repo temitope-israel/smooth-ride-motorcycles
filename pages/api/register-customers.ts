@@ -1,6 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { connectToDatabase } from "../../lib/mongodb";
 import Customer from "../../models/Customer";
+import Notification from "@/models/Notification";
+
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {
@@ -68,10 +70,22 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       startType,
     });
 
+
+
     res.status(201).json({
       message: "Registration successful",
       customer: newCustomer,
     });
+
+  
+
+// After saving the customer:
+await Notification.create({
+  message: `New customer registered by ${dealer || "a dealer"}`,
+  createdAt: new Date(),
+  read: false,
+});
+
   } catch (error) {
     console.error("Registration error:", error);
     res.status(500).json({ message: "Server error" });

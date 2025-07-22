@@ -186,7 +186,7 @@ export default function AnalyticsPage() {
                 <h2 className="text-base font-semibold mb-2">
                   📊 Monthly Registration Trend
                 </h2>
-                <ResponsiveContainer width="100%" height={250}>
+                <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={getMonthlyTrend()} className="text-sm">
                     <XAxis dataKey="month" fontSize={12} />
                     <YAxis allowDecimals={false} fontSize={12} />
@@ -205,7 +205,7 @@ export default function AnalyticsPage() {
                 <h2 className="text-base font-semibold mb-2">
                   🏍 Top Bike Models
                 </h2>
-                <ResponsiveContainer width="100%" height={250}>
+                <ResponsiveContainer width="100%" height={300}>
                   <PieChart className="text-sm">
                     <Pie
                       data={getTopModels()}
@@ -236,7 +236,7 @@ export default function AnalyticsPage() {
                     (Private or Commercial Use)
                   </span>
                 </h2>
-                <ResponsiveContainer width="100%" height={250}>
+                <ResponsiveContainer width="100%" height={300}>
                   <PieChart className="text-sm">
                     <Pie
                       data={getUsageDistribution()}
@@ -264,7 +264,7 @@ export default function AnalyticsPage() {
                 <h2 className="text-base font-semibold mb-2">
                   📍 Registrations by State
                 </h2>
-                <ResponsiveContainer width="100%" height={250}>
+                <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={getStateDistribution()} className="text-sm">
                     <XAxis
                       dataKey="name"
@@ -284,7 +284,7 @@ export default function AnalyticsPage() {
               {/* Dealers */}
               <div className="bg-white p-4 rounded shadow">
                 <h2 className="text-base font-semibold mb-2">🏪 Top Dealers</h2>
-                <ResponsiveContainer width="100%" height={250}>
+                <ResponsiveContainer width="100%" height={300}>
                   <BarChart data={getDealerDistribution()} className="text-sm">
                     <XAxis
                       dataKey="name"
@@ -309,7 +309,7 @@ export default function AnalyticsPage() {
                     (Blue/Black/Red/Grey/White)
                   </span>
                 </h2>
-                <ResponsiveContainer width="100%" height={250}>
+                <ResponsiveContainer width="100%" height={300}>
                   <PieChart className="text-sm">
                     <Pie
                       data={getColorPreferences()}
@@ -340,7 +340,7 @@ export default function AnalyticsPage() {
                     (Kick-Start / Self-Start)
                   </span>
                 </h2>
-                <ResponsiveContainer width="100%" height={250}>
+                <ResponsiveContainer width="100%" height={300}>
                   <PieChart className="text-sm">
                     <Pie
                       data={getStartTypePreferences()}
@@ -369,7 +369,7 @@ export default function AnalyticsPage() {
                   🛞 Rim Type Preferences{" "}
                   <span className="text-gray-500 text-sm">(Alloy / Spoke)</span>
                 </h2>
-                <ResponsiveContainer width="100%" height={250}>
+                <ResponsiveContainer width="100%" height={300}>
                   <PieChart className="text-sm">
                     <Pie
                       data={getRimTypePreferences()}
@@ -575,7 +575,7 @@ export default function AnalyticsPage() {
 //                 <h2 className="text-base font-semibold mb-2">
 //                   📊 Monthly Registration Trend
 //                 </h2>
-//                 <ResponsiveContainer width="100%" height={250}>
+//                 <ResponsiveContainer width="100%" height={300}>
 //                   <BarChart data={getMonthlyTrend()} className="text-sm">
 //                     <XAxis dataKey="month" fontSize={12} />
 //                     <YAxis allowDecimals={false} fontSize={12} />
@@ -594,7 +594,7 @@ export default function AnalyticsPage() {
 //                 <h2 className="text-base font-semibold mb-2">
 //                   🏍️ Top Bike Models
 //                 </h2>
-//                 <ResponsiveContainer width="100%" height={250}>
+//                 <ResponsiveContainer width="100%" height={300}>
 //                   <PieChart className="text-sm">
 //                     <Pie
 //                       data={getTopModels()}
@@ -622,7 +622,7 @@ export default function AnalyticsPage() {
 //                 <h2 className="text-base font-semibold mb-2">
 //                   📍 Registrations by State
 //                 </h2>
-//                 <ResponsiveContainer width="100%" height={250}>
+//                 <ResponsiveContainer width="100%" height={300}>
 //                   <BarChart data={getStateDistribution()} className="text-sm">
 //                     <XAxis
 //                       dataKey="name"
@@ -642,7 +642,7 @@ export default function AnalyticsPage() {
 //               {/* Dealers */}
 //               <div className="bg-white p-4 rounded shadow">
 //                 <h2 className="text-base font-semibold mb-2">🏪 Top Dealers</h2>
-//                 <ResponsiveContainer width="100%" height={250}>
+//                 <ResponsiveContainer width="100%" height={300}>
 //                   <BarChart data={getDealerDistribution()} className="text-sm">
 //                     <XAxis
 //                       dataKey="name"
@@ -664,7 +664,7 @@ export default function AnalyticsPage() {
 //                 <h2 className="text-base font-semibold mb-2">
 //                   🎨 Color Preferences
 //                 </h2>
-//                 <ResponsiveContainer width="100%" height={250}>
+//                 <ResponsiveContainer width="100%" height={300}>
 //                   <PieChart className="text-sm">
 //                     <Pie
 //                       data={getColorPreferences()}
@@ -692,7 +692,7 @@ export default function AnalyticsPage() {
 //                 <h2 className="text-base font-semibold mb-2">
 //                   🔋 Start Type Preferences
 //                 </h2>
-//                 <ResponsiveContainer width="100%" height={250}>
+//                 <ResponsiveContainer width="100%" height={300}>
 //                   <PieChart className="text-sm">
 //                     <Pie
 //                       data={getStartTypePreferences()}
@@ -720,7 +720,7 @@ export default function AnalyticsPage() {
 //                 <h2 className="text-base font-semibold mb-2">
 //                   🛞 Rim Type Preferences
 //                 </h2>
-//                 <ResponsiveContainer width="100%" height={250}>
+//                 <ResponsiveContainer width="100%" height={300}>
 //                   <PieChart className="text-sm">
 //                     <Pie
 //                       data={getRimTypePreferences()}

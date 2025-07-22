@@ -59,6 +59,16 @@ export default function ViewDealers() {
     setCurrentPage(1); // Reset to first page on new search
   };
 
+  useEffect(() => {
+    const fetchDealers = async () => {
+      const res = await fetch("/api/dealers");
+      const data = await res.json();
+      setDealers(data); // no pagination here
+    };
+
+    fetchDealers();
+  }, []);
+
   const handleDelete = async (id: string) => {
     try {
       const res = await fetch(`/api/admin/delete-dealer/${id}`, {
@@ -104,8 +114,9 @@ export default function ViewDealers() {
       "Phone 2",
       "Owner/Contact Person",
     ];
+
     const rows = dealers.map((d, i) => [
-      (currentPage - 1) * itemsPerPage + i + 1,
+      i + 1,
       d.status,
       d.pic,
       d.dlrName,
@@ -115,18 +126,21 @@ export default function ViewDealers() {
       d.address,
       d.phone1,
       d.phone2 || "",
-      d.ownerOrContactPerson,
+      d.ownerOrContactPerson || "",
     ]);
-    const csvContent =
-      "data:text/csv;charset=utf-8," +
-      [headers, ...rows].map((e) => e.join(",")).join("\n");
+
+    const csvContent = [headers, ...rows]
+      .map((row) =>
+        row.map((val) => `"${String(val).replace(/"/g, '""')}"`).join(",")
+      )
+      .join("\n");
+
     const blob = new Blob([csvContent], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
     a.download = "dealers.csv";
     a.click();
-    URL.revokeObjectURL(url);
   };
 
   const handleEditSave = async () => {

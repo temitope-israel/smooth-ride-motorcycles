@@ -5,6 +5,7 @@ import {
   UserPlus,
   Users,
   LogOut,
+  Bell,
   Menu,
   X,
   Settings,
@@ -17,25 +18,29 @@ interface AdminLayoutProps {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const [open, setOpen] = useState(false);
-   const [notifCount, setNotifCount] = useState(0);
+  const [unreadCount, setUnreadCount] = useState(0);
 
-  useEffect(() => {
-    const fetchCount = async () => {
-      try {
-        const res = await fetch("/api/admin/notifications");
-        const data = await res.json();
-        setNotifCount(data.count || 0);
-      } catch (err) {
-        console.error("Failed to fetch notification count", err);
-      }
-    };
+  const fetchCount = async () => {
+    const res = await fetch("/api/admin/unread-notification-count");
+    const data = await res.json();
+    setUnreadCount(data.count || 0);
+  };
 
-    fetchCount();
+useEffect(() => {
+  
+  fetchCount();
+}, []);
 
-    // Optional: auto-refresh every 30 secs
-    const interval = setInterval(fetchCount, 30000);
-    return () => clearInterval(interval);
-  }, []);
+
+// useEffect(() => {
+//   const markAllRead = async () => {
+//     await fetch("/api/admin/mark-all-notifications-read", {
+//       method: "PATCH",
+//     });
+//   };
+//   markAllRead();
+// }, []);
+
 
   return (
     <div className="max-h-screen flex flex-col md:flex-row">
@@ -95,14 +100,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
               <Users size={16} /> View Dealers
             </Link>
 
-             <Link href="/admin/notifications" className="flex items-center justify-between p-2 hover:bg-gray-100 rounded">
-        <span>🔔 Notifications</span>
-        {notifCount > 0 && (
-          <span className="ml-2 bg-red-500 text-white text-xs font-semibold px-2 py-0.5 rounded-full">
-            {notifCount}
-          </span>
-        )}
-      </Link>
+            <Link href="/admin/notifications" className="flex items-center gap-2 px-3 py-2 rounded hover:bg-red-800 relative">
+            <Bell size={16}/> Notifications
+             
+              
+              {unreadCount > 0 && (
+                <span className="absolute -top-0 -right-[-1] bg-red-600 text-white text-base px-1 rounded-full">
+                  {unreadCount}
+                </span>
+              )}
+            </Link>
           </nav>
         </div>
         <button
