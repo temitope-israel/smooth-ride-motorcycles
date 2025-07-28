@@ -3,21 +3,12 @@ import mongoose, { Schema, model, models } from "mongoose";
 
 const DealerSchema = new Schema(
   {
-    status: {
-      type: String,
-      enum: ["1s", "2s", "3s", "4s"],
-      required: true,
-    },
     exOrMulti: {
       type: String,
       enum: ["Exclusive", "Multi"],
       required: true,
     },
-    hondaExclusiveOutlet: {
-      type: String,
-      enum: ["Exclusive", "Multi"],
-      required: true,
-    },
+
     pic: { type: String, required: true }, // Person in Charge
     dlrName: { type: String, required: true },
     region: { type: String, required: true },

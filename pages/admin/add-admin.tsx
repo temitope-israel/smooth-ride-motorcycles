@@ -1,5 +1,8 @@
 import AdminLayout from "@/components/AdminLayout";
 import { useState } from "react";
+import {
+ SettingsIcon
+} from "lucide-react";
 
 type FormErrors = {
   fullName?: string;
@@ -57,13 +60,14 @@ export default function AddAdmin() {
 
   return (
     <AdminLayout>
-      <div className="max-h-screen bg-red-50 flex p-24">
+      <div className="max-h-screen  flex p-24">
         <form
           onSubmit={handleSubmit}
-          className="bg-white shadow-lg rounded-lg m-auto p-6 w-full max-w-xs space-y-4 "
+          className="bg-white shadow-lg rounded-lg m-auto px-6 py-10 w-full max-w-sm space-y-4 "
         >
-          <h2 className="text-lg text-center font-bold text-red-700">
+          <h2 className="text-2xl text-center font-bold text-indigo-700">
             Add New Admin
+            <SettingsIcon className="inline-block ml-2" />
           </h2>
 
           {/* Show generated password FIRST */}
@@ -83,7 +87,7 @@ export default function AddAdmin() {
                     setSuccessMessage("Password copied to clipboard!");
                   }}
                   type="button"
-                  className="bg-red-600 text-white text-xs px-3 py-1 rounded hover:bg-red-700"
+                  className="bg-indigo-600 text-white text-xs px-3 py-1 rounded hover:bg-indigo-700"
                 >
                   Copy
                 </button>
@@ -104,7 +108,7 @@ export default function AddAdmin() {
 
           {/* General Error */}
           {errors.general && (
-            <div className="bg-red-100 border border-red-500 text-red-800 p-3 rounded text-sm">
+            <div className="bg-indigo-100 border border-red-500 text-red-800 p-3 rounded text-sm">
               {errors.general}
             </div>
           )}
@@ -134,7 +138,7 @@ export default function AddAdmin() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full border px-3 py-2 rounded mt-1"
+              className="w-full border px-3 py-2 rounded mt-1 mb-5"
             />
             {errors.email && (
               <p className="text-red-600 text-sm mt-1">{errors.email}</p>
@@ -146,7 +150,7 @@ export default function AddAdmin() {
             type="submit"
             disabled={loading}
             className={`w-full py-2 text-white font-semibold rounded ${
-              loading ? "bg-gray-400" : "bg-red-600 hover:bg-red-700"
+              loading ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700"
             }`}
           >
             {loading ? "Adding..." : "Add Admin"}

@@ -153,7 +153,7 @@ export default function Admin() {
     <AdminLayout>
       <div className="p-2 space-y-2 ">
         <div className="flex justify-between items-center flex-wrap gap-4">
-          <h1 className="text-2xl font-bold text-red-700">Admin Dashboard</h1>
+          <h1 className="text-2xl font-bold text-indigo-700">Admin Dashboard</h1>
           <div className="flex gap-2">
             <button
               onClick={exportCSV}
@@ -163,7 +163,7 @@ export default function Admin() {
             </button>
             <button
               onClick={() => setDeleteAllConfirm(true)}
-              className="bg-red-600 text-white px-4 py-2 rounded text-xs"
+              className="bg-indigo-600 text-white px-4 py-2 rounded text-xs"
             >
               Delete All
             </button>
@@ -180,7 +180,7 @@ export default function Admin() {
 
         <div className="overflow-x-auto">
           <table className="min-w-full border-collapse mt-6 border border-gray-400 text-[11.5px]">
-            <thead className="bg-red-600 text-white">
+            <thead className="bg-indigo-600 text-white">
               <tr>
                 <th className="border px-2 py-1">S/N</th>
                 <th className="border px-2 py-1">Engine Number</th>
@@ -244,7 +244,7 @@ export default function Admin() {
                 key={i}
                 onClick={() => setPage(i + 1)}
                 className={`px-3 py-1 rounded mx-1 text-sm ${
-                  page === i + 1 ? "bg-red-600 text-white" : "bg-gray-200"
+                  page === i + 1 ? "bg-indigo-600 text-white" : "bg-gray-200"
                 }`}
               >
                 {i + 1}
@@ -369,7 +369,7 @@ function Modal({
           {confirmText && onConfirm && (
             <button
               onClick={onConfirm}
-              className="bg-red-600 text-white px-4 py-2 rounded"
+              className="bg-indigo-600 text-white px-4 py-2 rounded"
             >
               {confirmText}
             </button>

@@ -7,7 +7,7 @@ export default function HomePage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-gradient-to-tr from-red-100 to-white flex items-center justify-center p-6 w-full">
+    <div className="min-h-screen bg-gradient-to-tr from-indigo-100 to-white flex items-center justify-center p-6 w-full">
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={{ opacity: 1, y: 0 }}
@@ -15,9 +15,9 @@ export default function HomePage() {
         className="bg-white shadow-xl rounded-2xl max-w-4xl w-full grid md:grid-cols-2 overflow-hidden"
       >
         {/* Left Section */}
-        <div className="bg-red-600 text-white p-8 flex flex-col justify-center">
+        <div className="bg-indigo-600 text-white p-8 flex flex-col justify-center">
           <h1 className="text-2xl md:text-3xl font-bold leading-tight mb-4">
-            Honda Motorcycle
+            Smooth-Ride Motorcycles
             <br /> Registration System
           </h1>
           <p className="text-red-100 text-sm leading-relaxed">
@@ -32,7 +32,7 @@ export default function HomePage() {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             onClick={() => router.push("/admin/login")}
-            className="w-full flex items-center justify-center gap-2 bg-red-600 text-white py-3 px-6 rounded-lg text-sm shadow hover:bg-red-700 transition"
+            className="w-full flex items-center justify-center gap-2 bg-indigo-600 text-white py-3 px-6 rounded-lg text-sm shadow hover:bg-indigo-700 transition"
           >
             <ShieldCheck className="w-5 h-5" />
             Admin Login

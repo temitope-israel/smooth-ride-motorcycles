@@ -370,7 +370,7 @@ export default function Register() {
           </h2>
           <button
             onClick={() => setErrorModal("")}
-            className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded"
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded"
           >
             Close
           </button>
@@ -380,15 +380,15 @@ export default function Register() {
   }
 
   return (
-    <div className="w-full max-w-md text-xs mx-auto mt-6 px-4 relative">
-      <h1 className="text-xl font-bold text-center text-red-700 mb-4">
-        Honda Bike Registration
+    <div className="w-full max-w-xl text-sm mx-auto mt-6 px-4 relative">
+      <h1 className="text-2xl font-bold text-center text-indigo-700 mb-4">
+        Smooth-Ride Bike Registration
       </h1>
 
       {/* Scanner Mode Buttons */}
       <div className="flex justify-center gap-4 mb-4 flex-wrap">
         <button
-          className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-xs"
+          className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 text-sm"
           onClick={() => {
             setScannerMode("camera");
             setScannerLoading(true);
@@ -398,7 +398,7 @@ export default function Register() {
           Use Phone Camera
         </button>
         <button
-          className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 text-xs"
+          className="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 text-sm"
           onClick={() => {
             setScannerMode("external");
             setScannerInput("");
@@ -408,7 +408,7 @@ export default function Register() {
           Use External Scanner
         </button>
         <button
-          className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 text-xs"
+          className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600 text-sm"
           onClick={resetScanOnly}
         >
           Reset Engine Number
@@ -452,7 +452,7 @@ export default function Register() {
         </label>
         <input
           type="text"
-          value={engineNumber}
+          value={engineNumber.toUpperCase()}
           className="w-full border rounded px-3 py-2 bg-green-100 text-green-800"
           onChange={(e) => setEngineNumber(e.target.value)}
         />
@@ -463,7 +463,7 @@ export default function Register() {
         )}
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-4 w-full">
         <div>
           <label className="block font-medium">Title</label>
           <select
@@ -486,7 +486,7 @@ export default function Register() {
           <label className="block font-medium">Buyer Name</label>
           <input
             type="text"
-            value={form.buyerName}
+            value={form.buyerName.toUpperCase()}
             onChange={(e) => handleChange("buyerName", e.target.value)}
             className="w-full border rounded px-3 py-2"
           />
@@ -515,79 +515,82 @@ export default function Register() {
           )}
         </div>
 
-        <div>
-          <label className="block font-medium">State</label>
-          <select
-            value={form.state}
-            onChange={(e) => handleChange("state", e.target.value)}
-            className="w-full border rounded px-3 py-2"
-          >
-            <option value="">Select State</option>
-            {states.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </select>
-          {errors.state && (
-            <p className="text-red-600 text-sm mt-1">{errors.state}</p>
-          )}
+        <div className="flex gap-6 justify-between">
+          <div className="w-1/2">
+            <label className="block font-medium">State</label>
+            <select
+              value={form.state.toUpperCase()}
+              onChange={(e) => handleChange("state", e.target.value)}
+              className="w-full border rounded px-3 py-2"
+            >
+              <option value="">Select State</option>
+              {states.map((s) => (
+                <option key={s} value={s}>
+                  {s.toUpperCase()}
+                </option>
+              ))}
+            </select>
+            {errors.state && (
+              <p className="text-red-600 text-sm mt-1">{errors.state}</p>
+            )}
+          </div>
+          <div className="w-1/2">
+            <label className="block font-medium">Dealer</label>
+            <select
+              value={form.dealer.toUpperCase()}
+              onChange={(e) => handleChange("dealer", e.target.value)}
+              className="w-full border rounded px-3 py-2"
+            >
+              <option value="">Select Dealer</option>
+              {dealers.map((d) => (
+                <option key={d} value={d}>
+                  {d}
+                </option>
+              ))}
+            </select>
+            {errors.dealer && (
+              <p className="text-red-600 text-sm mt-1">{errors.dealer}</p>
+            )}
+          </div>
         </div>
 
-        <div>
-          <label className="block font-medium">Dealer</label>
-          <select
-            value={form.dealer}
-            onChange={(e) => handleChange("dealer", e.target.value)}
-            className="w-full border rounded px-3 py-2"
-          >
-            <option value="">Select Dealer</option>
-            {dealers.map((d) => (
-              <option key={d} value={d}>
-                {d}
-              </option>
-            ))}
-          </select>
-          {errors.dealer && (
-            <p className="text-red-600 text-sm mt-1">{errors.dealer}</p>
-          )}
-        </div>
+        <div className="flex gap-6 justify-between">
+          <div className="w-1/2">
+            <label className="block font-medium">Purchase Date</label>
+            <input
+              type="date"
+              max={new Date().toISOString().split("T")[0]} // today's date
+              value={form.purchaseDate}
+              onChange={(e) => handleChange("purchaseDate", e.target.value)}
+              className="w-full border rounded px-3 py-2"
+            />
+            {errors.purchaseDate && (
+              <p className="text-red-600 text-sm mt-1">{errors.purchaseDate}</p>
+            )}
+          </div>
 
-        <div>
-          <label className="block font-medium">Purchase Date</label>
-          <input
-            type="date"
-            max={new Date().toISOString().split("T")[0]} // today's date
-            value={form.purchaseDate}
-            onChange={(e) => handleChange("purchaseDate", e.target.value)}
-            className="w-full border rounded px-3 py-2"
-          />
-          {errors.purchaseDate && (
-            <p className="text-red-600 text-sm mt-1">{errors.purchaseDate}</p>
-          )}
-        </div>
-
-        <div>
-          <label className="block font-medium">
-            Usage: Private or Commercial (Okada)
-          </label>
-          <select
-            value={form.usage}
-            onChange={(e) => handleChange("usage", e.target.value)}
-            className="w-full border rounded px-3 py-2"
-            aria-placeholder="Select Usage"
-          >
-            <option value="">Select Usage</option>
-            <option value="Private">Private</option>
-            <option value="Commercial - Okada">Commercial (Okada)</option>
-          </select>
+          <div className="w-1/2">
+            <label className="block font-medium">
+              Usage: Private or Commercial (Okada)
+            </label>
+            <select
+              value={form.usage}
+              onChange={(e) => handleChange("usage", e.target.value)}
+              className="w-full border rounded px-3 py-2"
+              aria-placeholder="Select Usage"
+            >
+              <option value="">Select Usage</option>
+              <option value="Private">Private</option>
+              <option value="Commercial - Okada">Commercial (Okada)</option>
+            </select>
+          </div>
         </div>
 
         <div>
           <label className="block font-medium">End-User (Optional)</label>
           <input
             type="text"
-            value={form.endUser}
+            value={form.endUser.toUpperCase()}
             onChange={(e) => handleChange("endUser", e.target.value)}
             className="w-full border rounded px-3 py-2"
           />
@@ -624,7 +627,7 @@ export default function Register() {
             <option value="">Select Model</option>
             {Object.keys(modelsWithDetails).map((m) => (
               <option key={m} value={m}>
-                {m}
+                {m.toUpperCase()}
               </option>
             ))}
           </select>
@@ -644,7 +647,7 @@ export default function Register() {
               <option value="">Select Variant</option>
               {modelsWithDetails[form.model].variant!.map((v) => (
                 <option key={v} value={v}>
-                  {v}
+                  {v.toUpperCase()}
                 </option>
               ))}
             </select>
@@ -665,7 +668,7 @@ export default function Register() {
               <option value="">Select Color</option>
               {modelsWithDetails[form.model].color.map((c) => (
                 <option key={c} value={c}>
-                  {c}
+                  {c.toUpperCase()}
                 </option>
               ))}
             </select>
@@ -683,7 +686,7 @@ export default function Register() {
             setShowPasswordModal(true);
           }}
           className={`w-full py-2 text-white rounded ${
-            loading ? "bg-gray-400" : "bg-red-600 hover:bg-red-700"
+            loading ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700"
           }`}
         >
           {loading ? "Submitting..." : "Submit"}
@@ -726,7 +729,7 @@ export default function Register() {
                 Cancel
               </button>
               <button
-                className="bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700"
+                className="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700"
                 onClick={handlePasswordConfirm}
               >
                 Confirm

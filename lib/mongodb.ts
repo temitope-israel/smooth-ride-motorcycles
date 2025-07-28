@@ -13,7 +13,7 @@ export async function connectToDatabase() {
 
   if (!cached.promise) {
     cached.promise = mongoose.connect(MONGODB_URI, {
-      dbName: "honda-profiling",
+      dbName: "smooth-ride-motorcycles",
       bufferCommands: false,
     });
   }

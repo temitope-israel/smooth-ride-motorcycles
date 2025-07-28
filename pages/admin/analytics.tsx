@@ -139,7 +139,7 @@ export default function AnalyticsPage() {
   return (
     <AdminLayout>
       <div className="p-4">
-        <h1 className="text-2xl font-bold text-red-700 mb-4">Analytics</h1>
+        <h1 className="text-2xl font-bold text-indigo-700 mb-4">Analytics</h1>
 
         {loading ? (
           <p>Loading...</p>

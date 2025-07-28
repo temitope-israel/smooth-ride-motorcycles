@@ -99,7 +99,7 @@ export default function Admin() {
           {/* 📊 Table */}
           <div className="overflow-x-auto bg-white shadow rounded-lg">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-red-600 text-white">
+              <thead className="bg-indigo-600 text-white">
                 <tr>
                   <th className="px-4 py-2 text-left text-sm font-semibold">Engine No</th>
                   <th className="px-4 py-2 text-left text-sm font-semibold">Buyer</th>

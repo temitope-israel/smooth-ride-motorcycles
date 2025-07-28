@@ -4,7 +4,6 @@ import { Trash2, PencilLine, Download } from "lucide-react";
 
 type Dealer = {
   _id: string;
-  status: string;
   pic: string;
   dlrName: string;
   region: string;
@@ -103,7 +102,6 @@ export default function ViewDealers() {
   const exportToCSV = () => {
     const headers = [
       "S/N",
-      "Status",
       "PIC",
       "Dealer Name",
       "Region",
@@ -117,7 +115,6 @@ export default function ViewDealers() {
 
     const rows = dealers.map((d, i) => [
       i + 1,
-      d.status,
       d.pic,
       d.dlrName,
       d.region,
@@ -165,9 +162,9 @@ export default function ViewDealers() {
 
   return (
     <AdminLayout>
-      <div className="p-6 min-h-screen bg-red-50 text-xs">
+      <div className="p-6 min-h-screen bg-indigo-50 text-xs">
         <div className="flex flex-col sm:flex-row sm:justify-between gap-3 sm:items-center mb-4">
-          <h2 className="text-2xl font-bold text-red-700">View Dealers</h2>
+          <h2 className="text-2xl font-bold text-indigo-700">View Dealers</h2>
           <div className="flex gap-2 flex-wrap">
             <input
               type="text"
@@ -184,7 +181,7 @@ export default function ViewDealers() {
             </button>
             <button
               onClick={() => setShowBulkDeleteModal(true)}
-              className="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 text-xs"
+              className="bg-indigo-600 text-white px-3 py-2 rounded hover:bg-indigo-700 text-xs"
             >
               Delete All Dealers
             </button>
@@ -208,12 +205,11 @@ export default function ViewDealers() {
           <p>Loading dealers...</p>
         ) : (
           <div className="overflow-x-auto bg-white rounded shadow border mt-10">
-            <table className="min-w-full divide-y divide-gray-200 text-[10px]">
-              <thead className="bg-red-100 text-left">
+            <table className="min-w-full divide-y divide-gray-200 text-[12px]">
+              <thead className="bg-indigo-100 text-left">
                 <tr>
                   {[
                     "S/N",
-                    "Status",
                     "PIC",
                     "Dealer Name",
                     "Region",
@@ -237,7 +233,6 @@ export default function ViewDealers() {
                     <td className="px-4 py-2">
                       {(currentPage - 1) * itemsPerPage + i + 1}
                     </td>
-                    <td className="border px-4 py-2">{d.status}</td>
                     <td className="border px-4 py-2">{d.pic}</td>
                     <td className="border px-4 py-2">{d.dlrName}</td>
                     <td className="border px-4 py-2">{d.region}</td>
@@ -261,7 +256,7 @@ export default function ViewDealers() {
                       </button>
                       <button
                         onClick={() => setDealerToDelete(d)}
-                        className="text-red-600"
+                        className="text-indigo-600"
                       >
                         <Trash2 size={16} />
                       </button>
@@ -281,7 +276,7 @@ export default function ViewDealers() {
                 onClick={() => setCurrentPage(i + 1)}
                 className={`px-3 py-1 rounded ${
                   currentPage === i + 1
-                    ? "bg-red-600 text-white"
+                    ? "bg-indigo-600 text-white"
                     : "bg-gray-200 text-gray-800"
                 }`}
               >
@@ -296,11 +291,10 @@ export default function ViewDealers() {
         {editDealer && (
           <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded-lg max-w-lg w-full">
-              <h2 className="text-lg font-semibold mb-4 text-red-700">
+              <h2 className="text-lg font-semibold mb-4 text-indigo-700">
                 Edit Dealer
               </h2>
               {[
-                "status",
                 "pic",
                 "dlrName",
                 "region",
@@ -345,14 +339,14 @@ export default function ViewDealers() {
         {dealerToDelete && (
           <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full text-center">
-              <p className="text-red-700 font-semibold mb-2">Confirm Delete</p>
+              <p className="text-indigo-700 font-semibold mb-2">Confirm Delete</p>
               <p>
                 Delete dealer <strong>{dealerToDelete.dlrName}</strong>?
               </p>
               <div className="flex justify-center gap-4 mt-4">
                 <button
                   onClick={() => handleDelete(dealerToDelete._id)}
-                  className="bg-red-600 text-white px-4 py-2 rounded"
+                  className="bg-indigo-600 text-white px-4 py-2 rounded"
                 >
                   Yes, Delete
                 </button>
@@ -370,14 +364,14 @@ export default function ViewDealers() {
         {showBulkDeleteModal && (
           <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full text-center">
-              <p className="text-red-700 font-semibold mb-2">
+              <p className="text-indigo-700 font-semibold mb-2">
                 Delete All Dealers?
               </p>
               <p>This action cannot be undone.</p>
               <div className="flex justify-center gap-4 mt-4">
                 <button
                   onClick={handleBulkDelete}
-                  className="bg-red-600 text-white px-4 py-2 rounded"
+                  className="bg-indigo-600 text-white px-4 py-2 rounded"
                 >
                   Yes, Delete All
                 </button>
@@ -400,7 +394,7 @@ export default function ViewDealers() {
               </p>
               <button
                 onClick={() => setEditSuccess(false)}
-                className="bg-red-600 text-white px-4 py-2 rounded"
+                className="bg-indigo-600 text-white px-4 py-2 rounded"
               >
                 OK
               </button>
@@ -415,7 +409,7 @@ export default function ViewDealers() {
               </p>
               <button
                 onClick={() => setDeleteSuccess(false)}
-                className="bg-red-600 text-white px-4 py-2 rounded"
+                className="bg-indigo-600 text-white px-4 py-2 rounded"
               >
                 OK
               </button>
@@ -430,7 +424,7 @@ export default function ViewDealers() {
               </p>
               <button
                 onClick={() => setBulkDeleteSuccess(false)}
-                className="bg-red-600 text-white px-4 py-2 rounded"
+                className="bg-indigo-600 text-white px-4 py-2 rounded"
               >
                 OK
               </button>
@@ -440,7 +434,7 @@ export default function ViewDealers() {
         {bulkDeleteError && (
           <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
             <div className="bg-white p-6 rounded shadow-lg text-center max-w-sm w-full">
-              <p className="text-red-700 font-semibold mb-4">
+              <p className="text-indigo-700 font-semibold mb-4">
                 Failed to delete all dealers.
               </p>
               <button
@@ -621,9 +615,9 @@ export default function ViewDealers() {
 
 //   return (
 //     <AdminLayout>
-//       <div className="p-6 min-h-screen bg-red-50 text-xs">
+//       <div className="p-6 min-h-screen bg-indigo-50 text-xs">
 //         <div className="flex flex-col sm:flex-row sm:justify-between gap-3 sm:items-center mb-4">
-//           <h2 className="text-2xl font-bold text-red-700">View Dealers</h2>
+//           <h2 className="text-2xl font-bold text-indigo-700">View Dealers</h2>
 //           <div className="flex gap-2 flex-wrap">
 //             <input
 //               type="text"
@@ -643,7 +637,7 @@ export default function ViewDealers() {
 //             </button>
 //             <button
 //               onClick={() => setShowBulkDeleteModal(true)}
-//               className="bg-red-600 text-white px-3 py-2 rounded hover:bg-red-700 text-xs]"
+//               className="bg-indigo-600 text-white px-3 py-2 rounded hover:bg-indigo-700 text-xs]"
 //             >
 //               Delete All Dealers
 //             </button>
@@ -655,7 +649,7 @@ export default function ViewDealers() {
 //         ) : (
 //           <div className="overflow-x-auto bg-white rounded shadow border mt-10">
 //             <table className="min-w-full divide-y divide-gray-200 text-[10px]">
-//               <thead className="bg-red-100 text-left">
+//               <thead className="bg-indigo-100 text-left">
 //                 <tr>
 //                   {[
 //                     "S/N",
@@ -725,7 +719,7 @@ export default function ViewDealers() {
 //                       </button>
 //                       <button
 //                         onClick={() => setDealerToDelete(d)}
-//                         className="text-red-600"
+//                         className="text-indigo-600"
 //                       >
 //                         <Trash2 size={16} />
 //                       </button>
@@ -747,7 +741,7 @@ export default function ViewDealers() {
 //               onClick={() => setCurrentPage(i + 1)}
 //               className={`px-3 py-1 rounded ${
 //                 currentPage === i + 1
-//                   ? "bg-red-600 text-white"
+//                   ? "bg-indigo-600 text-white"
 //                   : "bg-gray-200 text-gray-800"
 //               }`}
 //             >
@@ -760,7 +754,7 @@ export default function ViewDealers() {
 //         {editDealer && (
 //           <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
 //             <div className="bg-white p-6 rounded-lg max-w-lg w-full">
-//               <h2 className="text-lg font-semibold mb-4 text-red-700">
+//               <h2 className="text-lg font-semibold mb-4 text-indigo-700">
 //                 Edit Dealer
 //               </h2>
 //               {[
@@ -810,14 +804,14 @@ export default function ViewDealers() {
 //         {dealerToDelete && (
 //           <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
 //             <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full text-center">
-//               <p className="text-red-700 font-semibold mb-2">Confirm Delete</p>
+//               <p className="text-indigo-700 font-semibold mb-2">Confirm Delete</p>
 //               <p>
 //                 Delete dealer <strong>{dealerToDelete.dlrName}</strong>?
 //               </p>
 //               <div className="flex justify-center gap-4 mt-4">
 //                 <button
 //                   onClick={() => handleDelete(dealerToDelete._id)}
-//                   className="bg-red-600 text-white px-4 py-2 rounded"
+//                   className="bg-indigo-600 text-white px-4 py-2 rounded"
 //                 >
 //                   Yes, Delete
 //                 </button>
@@ -836,14 +830,14 @@ export default function ViewDealers() {
 //         {showBulkDeleteModal && (
 //           <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
 //             <div className="bg-white p-6 rounded shadow-lg max-w-sm w-full text-center">
-//               <p className="text-red-700 font-semibold mb-2">
+//               <p className="text-indigo-700 font-semibold mb-2">
 //                 Delete All Dealers?
 //               </p>
 //               <p>This action cannot be undone.</p>
 //               <div className="flex justify-center gap-4 mt-4">
 //                 <button
 //                   onClick={handleBulkDelete}
-//                   className="bg-red-600 text-white px-4 py-2 rounded"
+//                   className="bg-indigo-600 text-white px-4 py-2 rounded"
 //                 >
 //                   Yes, Delete All
 //                 </button>
@@ -867,7 +861,7 @@ export default function ViewDealers() {
 //               </p>
 //               <button
 //                 onClick={() => setEditSuccess(false)}
-//                 className="bg-red-600 text-white px-4 py-2 rounded"
+//                 className="bg-indigo-600 text-white px-4 py-2 rounded"
 //               >
 //                 OK
 //               </button>
@@ -882,7 +876,7 @@ export default function ViewDealers() {
 //               </p>
 //               <button
 //                 onClick={() => setDeleteSuccess(false)}
-//                 className="bg-red-600 text-white px-4 py-2 rounded"
+//                 className="bg-indigo-600 text-white px-4 py-2 rounded"
 //               >
 //                 OK
 //               </button>
@@ -897,7 +891,7 @@ export default function ViewDealers() {
 //               </p>
 //               <button
 //                 onClick={() => setBulkDeleteSuccess(false)}
-//                 className="bg-red-600 text-white px-4 py-2 rounded"
+//                 className="bg-indigo-600 text-white px-4 py-2 rounded"
 //               >
 //                 OK
 //               </button>
@@ -907,7 +901,7 @@ export default function ViewDealers() {
 //         {bulkDeleteError && (
 //           <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
 //             <div className="bg-white p-6 rounded shadow-lg text-center max-w-sm w-full">
-//               <p className="text-red-700 font-semibold mb-4">
+//               <p className="text-indigo-700 font-semibold mb-4">
 //                 Failed to delete all dealers.
 //               </p>
 //               <button
