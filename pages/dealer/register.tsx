@@ -519,7 +519,7 @@ export default function Register() {
           <div className="w-1/2">
             <label className="block font-medium">State</label>
             <select
-              value={form.state.toUpperCase()}
+              value={form.state}
               onChange={(e) => handleChange("state", e.target.value)}
               className="w-full border rounded px-3 py-2"
             >
