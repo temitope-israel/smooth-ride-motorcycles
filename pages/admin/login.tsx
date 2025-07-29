@@ -100,7 +100,7 @@ export default function AdminLogin() {
         <button
           type="submit"
           disabled={loading}
-          className="mt-5 bg-red-600 hover:bg-red-700 text-white w-full py-2 rounded font-medium disabled:opacity-50"
+          className="mt-5 bg-indigo-600 hover:bg-indigo-700 text-white w-full py-2 rounded font-medium disabled:opacity-50"
         >
           {loading ? "Logging in..." : "Login"}
         </button>
