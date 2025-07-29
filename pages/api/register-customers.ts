@@ -50,11 +50,11 @@ export default async function handler(
 
   // ✅ Normalize fields to uppercase before checking and saving
   // const normalizedModel = model.trim().toUpperCase();
-  const normalizedModel = model.trim().toUpperCase();
-  const normalizedVariant = variant.trim().toUpperCase();
+  const normalizedModel = model?.trim().toUpperCase();
+  const normalizedVariant = variant?.trim().toUpperCase();
   const normalizedColor = color.trim().toUpperCase();
-  const normalizedRimType = rimType.trim().toUpperCase();
-  const normalizedStartType = startType.toUpperCase();
+  const normalizedRimType = rimType?.trim().toUpperCase();
+  const normalizedStartType = startType?.trim().toUpperCase();
 
   try {
     await connectToDatabase();
