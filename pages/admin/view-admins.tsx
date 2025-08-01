@@ -76,7 +76,7 @@ export default function AdminList() {
 
   return (
     <AdminLayout>
-      <div className="min-h-screen bg-red-50 p-6">
+      <div className="min-h-screen bg-indigo-50 p-6">
         <h2 className="text-2xl font-bold text-red-700 mb-6">Admin List</h2>
 
         {error && (
@@ -97,7 +97,7 @@ export default function AdminList() {
         ) : (
           <div className="overflow-x-auto rounded-lg shadow border border-gray-200 bg-white text-xs">
             <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-red-100 text-gray-700">
+              <thead className="bg-indigo-100 text-gray-700">
                 <tr>
                   <th className=" font-bold px-6 py-3 text-left">Name</th>
                   <th className=" font-bold px-6 py-3 text-left ">Email</th>
