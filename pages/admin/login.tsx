@@ -63,6 +63,17 @@ export default function AdminLogin() {
           </p>
         )}
 
+        <div>
+          <p>
+            Login Details:{" "}
+            <span className="font-bold text-red-500">Sample User</span>
+            <br />{" "}
+            <span className="font-bold text-green-500">
+              Email: test@mail.com <br /> Password: 2417fe
+            </span>
+          </p>
+        </div>
+
         {/* Email */}
         <label className="block mb-1 text-sm font-medium text-gray-700">
           Email
