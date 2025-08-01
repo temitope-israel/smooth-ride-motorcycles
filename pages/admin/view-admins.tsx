@@ -77,7 +77,7 @@ export default function AdminList() {
   return (
     <AdminLayout>
       <div className="min-h-screen bg-indigo-50 p-6">
-        <h2 className="text-2xl font-bold text-red-700 mb-6">Admin List</h2>
+        <h2 className="text-2xl font-bold text-Indigo-700 mb-6">Admin List</h2>
 
         {error && (
           <p className="bg-red-100 border border-red-500 text-red-800 p-2 mb-4 rounded text-xs">
