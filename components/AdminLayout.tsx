@@ -11,7 +11,6 @@ import {
   Settings,
   BarChart2,
 } from "lucide-react";
-
 interface AdminLayoutProps {
   children: ReactNode;
 }
@@ -27,7 +26,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   };
 
 useEffect(() => {
-  
+
   fetchCount();
 }, []);
 
@@ -92,8 +91,8 @@ useEffect(() => {
 
             <Link href="/admin/notifications" className="flex items-center gap-2 px-3 py-2 rounded hover:bg-indigo-800 relative">
             <Bell size={16}/> Notifications
-             
-              
+
+
               {unreadCount > 0 && (
                 <span className="absolute -top-0 -right-[-1] bg-indigo-600 text-white text-base px-1 rounded-full">
                   {unreadCount}
