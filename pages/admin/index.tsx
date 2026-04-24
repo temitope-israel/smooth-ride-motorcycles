@@ -1,4 +1,3 @@
-// pages/admin/index.tsx
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import AdminLayout from "@/components/AdminLayout";
@@ -24,6 +23,7 @@ export default function Admin() {
   const [customers, setCustomers] = useState<Customer[]>([]);
   const [filteredCustomers, setFilteredCustomers] = useState<Customer[]>([]);
   const [search, setSearch] = useState("");
+  const [loading, setLoading] = useState(true);
   const [editCustomer, setEditCustomer] = useState<Customer | null>(null);
   const [editSuccess, setEditSuccess] = useState(false);
   const [deleteId, setDeleteId] = useState<string | null>(null);
@@ -58,12 +58,15 @@ export default function Admin() {
   }, [search, customers]);
 
   const fetchCustomers = async () => {
+    setLoading(true);
     try {
       const res = await fetch("/api/registrations");
       const data = await res.json();
       setCustomers(data);
     } catch (err) {
       console.error("Failed to fetch:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -147,12 +150,15 @@ export default function Admin() {
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
           <div>
             <h1 className="text-3xl font-black text-slate-800 tracking-tight">Records Management</h1>
-            <p className="text-slate-500 text-sm font-medium">Monitoring {customers.length} total registrations</p>
+            <p className="text-slate-500 text-sm font-medium">
+              {loading ? "Syncing database..." : `Monitoring ${customers.length} total registrations`}
+            </p>
           </div>
           <div className="flex gap-3">
             <button
               onClick={exportCSV}
-              className="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-emerald-600 hover:text-white transition-all shadow-sm"
+              disabled={loading || customers.length === 0}
+              className="flex items-center gap-2 bg-emerald-50 text-emerald-700 px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-emerald-600 hover:text-white transition-all shadow-sm disabled:opacity-50"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
@@ -161,7 +167,8 @@ export default function Admin() {
             </button>
             <button
               onClick={() => setDeleteAllConfirm(true)}
-              className="bg-rose-50 text-rose-600 px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-rose-600 hover:text-white transition-all border border-rose-100"
+              disabled={loading || customers.length === 0}
+              className="bg-rose-50 text-rose-600 px-5 py-2.5 rounded-xl text-sm font-bold hover:bg-rose-600 hover:text-white transition-all border border-rose-100 disabled:opacity-50"
             >
               Clear Database
             </button>
@@ -183,99 +190,124 @@ export default function Admin() {
         </div>
 
         {/* Table Container */}
-        <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200 overflow-hidden">
-          <div className="overflow-x-auto">
-            <table className="w-full text-left border-collapse">
-              <thead>
-                <tr className="bg-slate-50 border-b border-slate-200">
-                  <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">S/N</th>
-                  <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">Engine Details</th>
-                  <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">Buyer Info</th>
-                  <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">Location</th>
-                  <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">Purchase Info</th>
-                  <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest text-center">Actions</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100">
-                {paginated.map((c, i) => (
-                  <tr key={c._id} className="hover:bg-slate-50/80 transition-colors group">
-                    <td className="px-6 py-4 text-slate-400 font-mono text-xs">
-                      {String((page - 1) * pageSize + i + 1).padStart(2, '0')}
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="font-bold text-slate-700 font-mono tracking-tighter">{c.engineNumber}</div>
-                      <div className="text-[10px] text-indigo-500 font-black uppercase">{c.model} • {c.color}</div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="font-bold text-slate-800">{c.title} {c.buyerName}</div>
-                      <div className="text-xs text-slate-500">{c.phone}</div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="text-sm font-semibold text-slate-700">{c.state}</div>
-                      <div className="text-[10px] text-slate-400 uppercase font-bold">{c.dealer}</div>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="text-sm text-slate-600">{new Date(c.purchaseDate).toLocaleDateString('en-GB')}</div>
-                      <span className={`text-[9px] px-2 py-0.5 rounded-full font-black uppercase ${c.usage.includes('Commercial') ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'}`}>
-                        {c.usage}
-                      </span>
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <div className="flex justify-center gap-2">
-                        <button
-                          onClick={() => setEditCustomer(c)}
-                          className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
-                          title="Edit Record"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
-                        </button>
-                        <button
-                          onClick={() => setDeleteId(c._id)}
-                          className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all"
-                          title="Delete Record"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
-                        </button>
-                      </div>
-                    </td>
+        <div className="bg-white rounded-2xl shadow-xl shadow-slate-200/50 border border-slate-200 overflow-hidden min-h-[400px] relative">
+
+          {loading ? (
+            /* ACTIVITY SPINNER */
+            <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] flex flex-col items-center justify-center z-20">
+              <div className="relative flex items-center justify-center">
+                <div className="w-16 h-16 border-4 border-indigo-50 border-t-indigo-600 rounded-full animate-spin"></div>
+                <div className="absolute w-8 h-8 border-4 border-indigo-200 border-b-indigo-500 rounded-full animate-spin-reverse opacity-50"></div>
+              </div>
+              <p className="mt-4 text-slate-400 font-black text-[10px] uppercase tracking-[0.3em] animate-pulse">Loading Records</p>
+            </div>
+          ) : filteredCustomers.length === 0 ? (
+            /* EMPTY STATE */
+            <div className="flex flex-col items-center justify-center py-20 text-center">
+              <div className="w-20 h-20 bg-slate-50 rounded-full flex items-center justify-center mb-4">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10 text-slate-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0a2 2 0 012 2v4a2 2 0 01-2 2H4a2 2 0 01-2-2v-4a2 2 0 012-2m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
+                </svg>
+              </div>
+              <h3 className="text-slate-800 font-bold text-lg">No Results Found</h3>
+              <p className="text-slate-400 text-sm max-w-[250px] mx-auto">We couldn't find any registrations matching your current filter.</p>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left border-collapse">
+                <thead>
+                  <tr className="bg-slate-50 border-b border-slate-200">
+                    <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">S/N</th>
+                    <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">Engine Details</th>
+                    <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">Buyer Info</th>
+                    <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">Location</th>
+                    <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest">Purchase Info</th>
+                    <th className="px-6 py-4 text-xs font-black text-slate-400 uppercase tracking-widest text-center">Actions</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </thead>
+                <tbody className="divide-y divide-slate-100">
+                  {paginated.map((c, i) => (
+                    <tr key={c._id} className="hover:bg-slate-50/80 transition-colors group">
+                      <td className="px-6 py-4 text-slate-400 font-mono text-xs">
+                        {String((page - 1) * pageSize + i + 1).padStart(2, '0')}
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="font-bold text-slate-700 font-mono tracking-tighter">{c.engineNumber}</div>
+                        <div className="text-[10px] text-indigo-500 font-black uppercase">{c.model} • {c.color}</div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="font-bold text-slate-800">{c.title} {c.buyerName}</div>
+                        <div className="text-xs text-slate-500">{c.phone}</div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="text-sm font-semibold text-slate-700">{c.state}</div>
+                        <div className="text-[10px] text-slate-400 uppercase font-bold">{c.dealer}</div>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="text-sm text-slate-600">{new Date(c.purchaseDate).toLocaleDateString('en-GB')}</div>
+                        <span className={`text-[9px] px-2 py-0.5 rounded-full font-black uppercase ${c.usage.includes('Commercial') ? 'bg-amber-100 text-amber-700' : 'bg-blue-100 text-blue-700'}`}>
+                          {c.usage}
+                        </span>
+                      </td>
+                      <td className="px-6 py-4 text-center">
+                        <div className="flex justify-center gap-2">
+                          <button
+                            onClick={() => setEditCustomer(c)}
+                            className="p-2 text-slate-400 hover:text-indigo-600 hover:bg-indigo-50 rounded-lg transition-all"
+                            title="Edit Record"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" /></svg>
+                          </button>
+                          <button
+                            onClick={() => setDeleteId(c._id)}
+                            className="p-2 text-slate-400 hover:text-rose-600 hover:bg-rose-50 rounded-lg transition-all"
+                            title="Delete Record"
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" /></svg>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
 
           {/* Pagination Footer */}
-          <div className="bg-slate-50/50 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 border-t border-slate-100">
-            <div className="flex items-center gap-4">
-              <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Show per page:</span>
-              <select
-                value={pageSize}
-                onChange={(e) => setPageSize(Number(e.target.value))}
-                className="bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-bold text-slate-600 outline-none focus:ring-2 focus:ring-indigo-500/20"
-              >
-                {[10, 20, 50, 100].map((size) => <option key={size} value={size}>{size}</option>)}
-              </select>
-            </div>
-
-            <div className="flex gap-2">
-              {Array.from({ length: totalPages }, (_, i) => (
-                <button
-                  key={i}
-                  onClick={() => setPage(i + 1)}
-                  className={`min-w-[32px] h-8 rounded-lg text-xs font-bold transition-all ${
-                    page === i + 1
-                      ? "bg-indigo-600 text-white shadow-lg shadow-indigo-200"
-                      : "bg-white text-slate-500 border border-slate-200 hover:border-indigo-300"
-                  }`}
+          {!loading && filteredCustomers.length > 0 && (
+            <div className="bg-slate-50/50 px-6 py-4 flex flex-col md:flex-row justify-between items-center gap-4 border-t border-slate-100">
+              <div className="flex items-center gap-4">
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest">Show per page:</span>
+                <select
+                  value={pageSize}
+                  onChange={(e) => setPageSize(Number(e.target.value))}
+                  className="bg-white border border-slate-200 rounded-lg px-2 py-1 text-xs font-bold text-slate-600 outline-none focus:ring-2 focus:ring-indigo-500/20"
                 >
-                  {i + 1}
-                </button>
-              ))}
+                  {[10, 20, 50, 100].map((size) => <option key={size} value={size}>{size}</option>)}
+                </select>
+              </div>
+
+              <div className="flex gap-2">
+                {Array.from({ length: totalPages }, (_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => setPage(i + 1)}
+                    className={`min-w-[32px] h-8 rounded-lg text-xs font-bold transition-all ${
+                      page === i + 1
+                        ? "bg-indigo-600 text-white shadow-lg shadow-indigo-200"
+                        : "bg-white text-slate-500 border border-slate-200 hover:border-indigo-300"
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
-        {/* Modals */}
+        {/* Edit Modal */}
         {editCustomer && (
           <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
             <div className="bg-white p-8 rounded-[2rem] shadow-2xl w-full max-w-xl border border-white animate-in zoom-in duration-200">
@@ -284,12 +316,12 @@ export default function Admin() {
                 Edit Registration
               </h2>
               <div className="grid grid-cols-2 gap-4">
-                {["buyerName", "phone", "state", "dealer", "model", "color"].map((field) => (
+                {(["buyerName", "phone", "state", "dealer", "model", "color"] as const).map((field) => (
                   <div key={field} className={field === "buyerName" ? "col-span-2" : ""}>
                     <label className="block text-[10px] font-black text-slate-400 uppercase tracking-[0.15em] mb-1.5 ml-1">{field.replace(/([A-Z])/g, ' $1')}</label>
                     <input
-                      value={(editCustomer as any)[field]}
-                      onChange={(e) => handleEditChange(field as keyof Customer, e.target.value)}
+                      value={editCustomer[field] || ""}
+                      onChange={(e) => handleEditChange(field, e.target.value)}
                       className="w-full bg-slate-50 border border-slate-100 px-4 py-2.5 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-indigo-500/20 focus:bg-white outline-none transition-all"
                     />
                   </div>
@@ -303,7 +335,7 @@ export default function Admin() {
           </div>
         )}
 
-        {/* Reusable Modal Component Calls */}
+        {/* Notification Modals */}
         {editSuccess && <Modal message="Record updated successfully!" onClose={() => setEditSuccess(false)} />}
 
         {deleteId && (
@@ -330,6 +362,17 @@ export default function Admin() {
 
         {deleteAllSuccess && <Modal message="Database reset successful." onClose={() => setDeleteAllSuccess(false)} />}
       </div>
+
+      {/* Reverse animation for sub-spinner */}
+      <style jsx global>{`
+        @keyframes spin-reverse {
+          from { transform: rotate(360deg); }
+          to { transform: rotate(0deg); }
+        }
+        .animate-spin-reverse {
+          animation: spin-reverse 1s linear infinite;
+        }
+      `}</style>
     </AdminLayout>
   );
 }
@@ -374,7 +417,6 @@ function Modal({
     </div>
   );
 }
-
 // // pages/admin/index.tsx
 // import { useEffect, useState } from "react";
 // import { useRouter } from "next/router";
